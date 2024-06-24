@@ -9,7 +9,10 @@ namespace BudgetApp.Models.CoreModels
         [Required]
         public string Name { get; set; }
         public int? CategoryId { get; set; }
+
+        public string CategoryName { get; set; }
         public Category Category { get; set; }
-        public ICollection<Expense> Expenses { get; set; }
+        public ICollection<Expense> Expenses { get; set; } = new List<Expense>();
+        public ICollection<Income> Incomes { get; set; } = new List<Income>();
     }
 }

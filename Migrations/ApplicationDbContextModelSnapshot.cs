@@ -73,14 +73,14 @@ namespace BudgetApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("SetRecurrentDay")
+                        .HasColumnType("int");
+
                     b.Property<int?>("SubCategoryId")
                         .HasColumnType("int");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("setRecurrentDay")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -111,10 +111,10 @@ namespace BudgetApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Price")
+                    b.Property<decimal>("PeriodicAmount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid?>("UserId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -151,14 +151,14 @@ namespace BudgetApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("SetRecurrentDay")
+                        .HasColumnType("int");
+
                     b.Property<int?>("SubCategoryId")
                         .HasColumnType("int");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("setRecurrentDay")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -171,6 +171,33 @@ namespace BudgetApp.Migrations
                     b.ToTable("Incomes");
                 });
 
+            modelBuilder.Entity("BudgetApp.Models.CoreModels.Saving", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("LastMonthTotal")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("Month")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("Total")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Savings");
+                });
+
             modelBuilder.Entity("BudgetApp.Models.CoreModels.SubCategory", b =>
                 {
                     b.Property<int>("Id")
@@ -181,6 +208,10 @@ namespace BudgetApp.Migrations
 
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
+
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -241,19 +272,23 @@ namespace BudgetApp.Migrations
 
             modelBuilder.Entity("BudgetApp.Models.CoreModels.Goal", b =>
                 {
-                    b.HasOne("BudgetApp.Models.CoreModels.User", null)
+                    b.HasOne("BudgetApp.Models.CoreModels.User", "User")
                         .WithMany("Goals")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BudgetApp.Models.CoreModels.Income", b =>
                 {
                     b.HasOne("BudgetApp.Models.CoreModels.Category", "Category")
-                        .WithMany()
+                        .WithMany("Incomes")
                         .HasForeignKey("CategoryId");
 
                     b.HasOne("BudgetApp.Models.CoreModels.SubCategory", "SubCategory")
-                        .WithMany()
+                        .WithMany("Incomes")
                         .HasForeignKey("SubCategoryId");
 
                     b.HasOne("BudgetApp.Models.CoreModels.User", "User")
@@ -265,6 +300,17 @@ namespace BudgetApp.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("SubCategory");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BudgetApp.Models.CoreModels.Saving", b =>
+                {
+                    b.HasOne("BudgetApp.Models.CoreModels.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -281,11 +327,15 @@ namespace BudgetApp.Migrations
             modelBuilder.Entity("BudgetApp.Models.CoreModels.Category", b =>
                 {
                     b.Navigation("Expenses");
+
+                    b.Navigation("Incomes");
                 });
 
             modelBuilder.Entity("BudgetApp.Models.CoreModels.SubCategory", b =>
                 {
                     b.Navigation("Expenses");
+
+                    b.Navigation("Incomes");
                 });
 
             modelBuilder.Entity("BudgetApp.Models.CoreModels.User", b =>

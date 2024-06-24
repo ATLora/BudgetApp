@@ -15,6 +15,7 @@ namespace BudgetApp.Models
         public DbSet<Category> Categories { get; set; }
         public DbSet<SubCategory> SubCategories { get; set; }
         public DbSet<Goal> Goals { get; set; }
+        public DbSet<Saving> Savings { get; set; }
 
     }
 }

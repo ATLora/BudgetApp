@@ -21,9 +21,10 @@ namespace BudgetApp.Models.CoreModels
         [ForeignKey("SubCategoryId")]
         public SubCategory SubCategory { get; set; }
         public bool IsRecurrent { get; set; }
-        public int setRecurrentDay { get; set; }
+        public int SetRecurrentDay { get; set; }
         public DateTime Date { get; set; }
         public Guid UserId { get; set; }
+        [ForeignKey("UserId")]
         public User User { get; set; }
     }
 }

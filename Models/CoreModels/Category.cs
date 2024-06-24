@@ -10,7 +10,8 @@ namespace BudgetApp.Models.CoreModels
         public string Name { get; set; }
         public string Type { get; set; }
         public string? Icon { get; set; }
-        public ICollection<Expense> Expenses { get; set; }
+        public ICollection<Expense> Expenses { get; set; } = new List<Expense>();
+        public ICollection<Income> Incomes { get; set; } = new List<Income>();
 
     }
 }

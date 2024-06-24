@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BudgetApp.Models.CoreModels
 {
@@ -10,7 +11,15 @@ namespace BudgetApp.Models.CoreModels
         public string Name { get; set; }
         public string? Description { get; set; }
         [Required]
-        public decimal Price { get; set; }
+        public decimal PeriodicAmount { get; set; }
+        [NotMapped]
+        public decimal TargetAmount { get; set; }
+        [NotMapped]
+        public decimal CurrentAmount { get; set; }
         public string? Icon { get; set; }
+        public Guid UserId { get; set; }
+
+        [ForeignKey("UserId")]
+        public User User { get; set; }
     }
 }
