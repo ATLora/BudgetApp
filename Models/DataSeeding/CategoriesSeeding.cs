@@ -139,7 +139,7 @@ namespace BudgetApp.Models.DataSeeding
                         },
                         new Category
                         {
-                            Name = "Resnt",
+                            Name = "Rent",
                             Type = Income,
                             Icon = fasolid + "fa-dollar-sign"
                         },

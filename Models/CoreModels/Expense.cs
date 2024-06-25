@@ -11,7 +11,9 @@ namespace BudgetApp.Models.CoreModels
         public string Name { get; set; }
         public string? Description { get; set; }
         [Required]
-        public decimal Amount { get; set; }
+        public decimal ProjectedAmount { get; set; }
+        [Required]
+        public decimal RealAmount { get; set; }
         // Foreign Key for Category
         public int? CategoryId { get; set; }
         [ForeignKey("CategoryId")]
