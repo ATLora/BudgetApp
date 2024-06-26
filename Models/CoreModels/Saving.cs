@@ -18,9 +18,9 @@ namespace BudgetApp.Models.CoreModels
         public DateTime Month { get; set; } 
 
     
-        public Guid UserId { get; set; }
+        public String UserId { get; set; }
         [ForeignKey("UserId")]
-        public User User { get; set; }
+        public ApplicationUser User { get; set; }
 
     }
 }

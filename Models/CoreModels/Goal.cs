@@ -17,9 +17,9 @@ namespace BudgetApp.Models.CoreModels
         [NotMapped]
         public decimal CurrentAmount { get; set; }
         public string? Icon { get; set; }
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
 
         [ForeignKey("UserId")]
-        public User User { get; set; }
+        public ApplicationUser User { get; set; }
     }
 }

@@ -25,8 +25,8 @@ namespace BudgetApp.Models.CoreModels
         public bool IsRecurrent { get; set; }
         public int SetRecurrentDay { get; set; }
         public DateTime Date { get; set; }
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
         [ForeignKey("UserId")]
-        public User User { get; set; }
+        public ApplicationUser User { get; set; }
     }
 }

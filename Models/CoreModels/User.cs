@@ -1,19 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 
 namespace BudgetApp.Models.CoreModels
 {
-    public class User
+    public class ApplicationUser : IdentityUser
     {
-        [Key]
-        public Guid Id { get; set; } = Guid.NewGuid();
+        
         [Required]
         public string Name { get; set; }
-
-        [Required]
-        [EmailAddress]
-        public string Email { get; set; }
-        [Required]
-        public string Password { get; set; }
 
         [Required]
         public decimal AccountsBalance { get; set; }
