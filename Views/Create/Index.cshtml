@@ -1,0 +1,43 @@
+﻿@model BudgetApp.Models.ViewModels.CreateViewModel
+
+<div class="container">
+    <h1 class="my-4">Create a Budget</h1>
+
+    <form asp-action="Index" method="post">
+        <div class="row">
+            <div class="col-12 bg-white py-4">
+                <h2>Section 1</h2>
+                <div class="form-group">
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 bg-grey py-4">
+                <h2>Section 2</h2>
+                <div class="form-group">
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 bg-white py-4">
+                <h2>Section 3</h2>
+                <div class="form-group">
+                    <label>Categories</label>
+                    <ul>
+                        @foreach (var category in Model.Categories)
+                        {
+                            <li>
+                                <input type="checkbox"/> @category.Name
+                            </li>
+                        }
+                    </ul>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>

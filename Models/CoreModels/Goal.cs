@@ -8,7 +8,7 @@ namespace BudgetApp.Models.CoreModels
         [Key]
         public int Id { get; set; }
         [Required]
-        public string Name { get; set; }
+        public required string Name { get; set; }
         public string? Description { get; set; }
         [Required]
         public decimal PeriodicAmount { get; set; }
@@ -17,7 +17,7 @@ namespace BudgetApp.Models.CoreModels
         [NotMapped]
         public decimal CurrentAmount { get; set; }
         public string? Icon { get; set; }
-        public string UserId { get; set; }
+        public required string UserId { get; set; }
 
         [ForeignKey("UserId")]
         public ApplicationUser User { get; set; }

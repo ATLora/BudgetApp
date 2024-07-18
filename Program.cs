@@ -5,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Identity;
 using BudgetApp.Models.CoreModels;
+using BudgetApp.Services.Interfaces;
+using BudgetApp.Services.Implementations;
 
 
 
@@ -21,6 +23,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddRazorPages();
+
+builder.Services.AddScoped<IIncomeService, IncomeService>();
 
 var app = builder.Build();
 
