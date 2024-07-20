@@ -17,12 +17,21 @@ namespace BudgetApp.Controllers
         private readonly ApplicationDbContext _db;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IIncomeService _incomeService;
+        private readonly IExpenseService _expenseService;
+        private readonly IGoalService _goalService;
 
-        public CreateController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IIncomeService incomeService)
+        public CreateController(ApplicationDbContext context, 
+                                UserManager<ApplicationUser> userManager,
+                                IIncomeService incomeService,
+                                IExpenseService expenseService,
+                                IGoalService goalService
+                                )
         {
             _db = context;
             _userManager = userManager;
             _incomeService = incomeService;
+            _expenseService = expenseService;
+            _goalService = goalService;
         }
         [HttpPost]
         public async Task<ActionResult> Create(InitialBudgetViewModel model)
@@ -33,10 +42,18 @@ namespace BudgetApp.Controllers
                 {
                     var user = await _userManager.GetUserAsync(User);
                     var userId = user.Id;
-                    //TODO: Create Expenses and goal, also add initialbalance to profile 
+                    //TODO Create Balance service  
                     foreach(var income in model.Incomes) 
                     {
                         await _incomeService.AddIncomeAsync(income, userId);
+                    }
+                    foreach(var expense in model.Expenses)
+                    {
+                        await _expenseService.AddExpenseAsync(expense, userId);
+                    }
+                    if(model.Goal != null)
+                    {
+                        await _goalService.AddGoalAsync(model.Goal, userId);
                     }
                 }
                 catch (Exception ex)

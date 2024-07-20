@@ -25,6 +25,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddRazorPages();
 
 builder.Services.AddScoped<IIncomeService, IncomeService>();
+builder.Services.AddScoped<IExpenseService, ExpenseService>();
+builder.Services.AddScoped<IGoalService, GoalService>();
 
 var app = builder.Build();
 
