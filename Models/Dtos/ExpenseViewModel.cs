@@ -1,4 +1,6 @@
-﻿namespace BudgetApp.Models.Dtos
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BudgetApp.Models.Dtos
 {
     public class ExpenseViewModel
     {

@@ -1,43 +1,50 @@
-﻿@model BudgetApp.Models.ViewModels.CreateViewModel
+﻿@model BudgetApp.Models.ViewModels.InitialBudgetViewModel
 
-<div class="container">
-    <h1 class="my-4">Create a Budget</h1>
+@{
+    ViewData["Title"] = "Create Initial Budget";
+}
 
-    <form asp-action="Index" method="post">
-        <div class="row">
-            <div class="col-12 bg-white py-4">
-                <h2>Section 1</h2>
-                <div class="form-group">
-                    
+<h2>Create Initial Budget</h2>
+
+@using (Html.BeginForm("Create", "Create", FormMethod.Post))
+{
+    <div>
+        <h3>Incomes</h3>
+        @for (int i = 0; i < Model.Incomes.Count; i++)
+        {
+            var incomeCategory = Model.Categories.FirstOrDefault(c => c.Id == Model.Incomes[i].CategoryId);
+            if (incomeCategory != null)
+            {
+                <div>
+                    <h4>@incomeCategory.Name <i class="@incomeCategory.Icon"></i></h4>
+                    <div>
+                        @Html.LabelFor(m => m.Incomes[i].ProjectedAmount)
+                        @Html.TextBoxFor(m => m.Incomes[i].ProjectedAmount, new { @name = $"Incomes[{i}].ProjectedAmount" })
+                        @Html.HiddenFor(m => m.Incomes[i].CategoryId, new { @name = $"Incomes[{i}].CategoryId" })
+                        @Html.HiddenFor(m => m.Incomes[i].Name, new { @name = $"Incomes[{i}].Name" })
+                    </div>
                 </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-12 bg-grey py-4">
-                <h2>Section 2</h2>
-                <div class="form-group">
-                    
+            }
+        }
+    </div>
+    <div>
+        <h3>Expenses</h3>
+        @for (int i = 0; i < Model.Expenses.Count; i++)
+        {
+            var expenseCategory = Model.Categories.FirstOrDefault(c => c.Id == Model.Expenses[i].CategoryId);
+            if (expenseCategory != null)
+            {
+                <div>
+                    <h4>@expenseCategory.Name <i class="@expenseCategory.Icon"></i></h4>
+                    <div>
+                        @Html.LabelFor(m => m.Expenses[i].ProjectedAmount)
+                        @Html.TextBoxFor(m => m.Expenses[i].ProjectedAmount, new { @name = $"Expenses[{i}].ProjectedAmount" })
+                        @Html.HiddenFor(m => m.Expenses[i].CategoryId, new { @name = $"Expenses[{i}].CategoryId" })
+                        @Html.HiddenFor(m => m.Expenses[i].Name, new { @name = $"Expenses[{i}].Name" })
+                    </div>
                 </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-12 bg-white py-4">
-                <h2>Section 3</h2>
-                <div class="form-group">
-                    <label>Categories</label>
-                    <ul>
-                        @foreach (var category in Model.Categories)
-                        {
-                            <li>
-                                <input type="checkbox"/> @category.Name
-                            </li>
-                        }
-                    </ul>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-        </div>
-    </form>
-</div>
+            }
+        }
+    </div>
+    <button type="submit">Submit</button>
+}

@@ -19,11 +19,12 @@ namespace BudgetApp.Services.Implementations
             {
                 Name = expenseDto.Name,
                 Description = expenseDto.Description,
-                ProjectedAmount = expenseDto.ProjectedAmount.Value,
+                ProjectedAmount = expenseDto.ProjectedAmount != null ? expenseDto.ProjectedAmount.Value : null,
+                RealAmount = expenseDto.RealAmount != null ? expenseDto.RealAmount.Value : null,
                 CategoryId = expenseDto.CategoryId,
                 SubCategoryId = expenseDto.SubCategoryId,
                 IsRecurrent = expenseDto.IsRecurrent,
-                SetRecurrentDay = expenseDto.SetRecurrentDay.Value,
+                SetRecurrentDay = expenseDto.SetRecurrentDay != null ? expenseDto.SetRecurrentDay.Value : null,
                 Date = expenseDto.Date,
                 UserId = userId
             };

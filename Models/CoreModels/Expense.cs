@@ -8,12 +8,10 @@ namespace BudgetApp.Models.CoreModels
         [Key]
         public int Id { get; set; }
         [Required]
-        public string Name { get; set; }
+        public required string Name { get; set; }
         public string? Description { get; set; }
-        [Required]
-        public decimal ProjectedAmount { get; set; }
-        [Required]
-        public decimal RealAmount { get; set; }
+        public decimal? ProjectedAmount { get; set; }
+        public decimal? RealAmount { get; set; }
         // Foreign Key for Category
         public int? CategoryId { get; set; }
         [ForeignKey("CategoryId")]
@@ -23,7 +21,7 @@ namespace BudgetApp.Models.CoreModels
         [ForeignKey("SubCategoryId")]
         public SubCategory SubCategory { get; set; }
         public bool IsRecurrent { get; set; }
-        public int SetRecurrentDay { get; set; }
+        public int? SetRecurrentDay { get; set; }
         public DateTime Date { get; set; }
         public string UserId { get; set; }
         [ForeignKey("UserId")]

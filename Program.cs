@@ -27,6 +27,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddScoped<IIncomeService, IncomeService>();
 builder.Services.AddScoped<IExpenseService, ExpenseService>();
 builder.Services.AddScoped<IGoalService, GoalService>();
+builder.Services.AddScoped<IBalanceService, BalanceService>();
 
 var app = builder.Build();
 
