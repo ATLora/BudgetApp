@@ -14,8 +14,8 @@ namespace BudgetApp.Models
         {
         }
 
-        public DbSet<Expense> Expenses { get; set; }
-        public DbSet<Income> Incomes { get; set; }
+        public DbSet<BudgetItem> BudgetItems { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<SubCategory> SubCategories { get; set; }
         public DbSet<Goal> Goals { get; set; }

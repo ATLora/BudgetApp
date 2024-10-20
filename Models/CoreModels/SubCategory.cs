@@ -12,7 +12,7 @@ namespace BudgetApp.Models.CoreModels
 
         public string CategoryName { get; set; }
         public Category Category { get; set; }
-        public ICollection<Expense> Expenses { get; set; } = new List<Expense>();
-        public ICollection<Income> Incomes { get; set; } = new List<Income>();
+        public ICollection<BudgetItem> Expenses { get; set; } = new List<BudgetItem>();
+        public ICollection<Transaction> Incomes { get; set; } = new List<Transaction>();
     }
 }

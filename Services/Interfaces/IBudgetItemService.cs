@@ -3,11 +3,13 @@ using BudgetApp.Models.Dtos;
 
 namespace BudgetApp.Services.Interfaces
 {
-    public interface IExpenseService
+    public interface IBudgetItemService
     {
         //Task<IEnumerable<Expense>> GetExpensesAsync(string userId);
         //Task<Expense> GetExpenseByIdAsync(int id, string userId);
-        Task AddExpenseAsync(ExpenseViewModel expenseDto, string userId);
+        Task AddBudgetItemAsync(BudgetItemDto budgetItemDto, string userId);
+        Task<List<BudgetItem>> GetAllBudgetItems(string userId);
+        List<BudgetItemDto>ConvertBudgetItemToDtoList(List<BudgetItem> budgetItemList);
         //Task UpdateExpenseAsync(Expense expense);
         //Task DeleteExpenseAsync(int id, string userId);
     }

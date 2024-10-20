@@ -24,10 +24,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddRazorPages();
 
-builder.Services.AddScoped<IIncomeService, IncomeService>();
-builder.Services.AddScoped<IExpenseService, ExpenseService>();
+builder.Services.AddScoped<ITransactionService, IncomeService>();
+builder.Services.AddScoped<IBudgetItemService, BudgetItemService>();
 builder.Services.AddScoped<IGoalService, GoalService>();
 builder.Services.AddScoped<IBalanceService, BalanceService>();
+builder.Services.AddScoped<IUtilitiesService, UtilitiesService>();
 
 var app = builder.Build();
 

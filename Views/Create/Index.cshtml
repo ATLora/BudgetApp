@@ -22,6 +22,7 @@
                         @Html.TextBoxFor(m => m.Incomes[i].ProjectedAmount, new { @name = $"Incomes[{i}].ProjectedAmount" })
                         @Html.HiddenFor(m => m.Incomes[i].CategoryId, new { @name = $"Incomes[{i}].CategoryId" })
                         @Html.HiddenFor(m => m.Incomes[i].Name, new { @name = $"Incomes[{i}].Name" })
+                        @Html.HiddenFor(m => m.Incomes[i].TransactionType, new { @name = $"Incomes[{i}].TrasactionType" })
                     </div>
                 </div>
             }
@@ -41,6 +42,7 @@
                         @Html.TextBoxFor(m => m.Expenses[i].ProjectedAmount, new { @name = $"Expenses[{i}].ProjectedAmount" })
                         @Html.HiddenFor(m => m.Expenses[i].CategoryId, new { @name = $"Expenses[{i}].CategoryId" })
                         @Html.HiddenFor(m => m.Expenses[i].Name, new { @name = $"Expenses[{i}].Name" })
+                        @Html.HiddenFor(m => m.Expenses[i].TransactionType, new { @name = $"Expenses[{i}].TrasactionType" })
                     </div>
                 </div>
             }

@@ -11,8 +11,8 @@ namespace BudgetApp.Models.CoreModels
 
         [Required]
         public decimal AccountsBalance { get; set; }
-        public ICollection<Expense> Expenses { get; set; } = new List<Expense>();
-        public ICollection<Income> Incomes { get; set; } = new List<Income>();
+        public ICollection<BudgetItem> Expenses { get; set; } = new List<BudgetItem>();
+        public ICollection<Transaction> Incomes { get; set; } = new List<Transaction>();
         public ICollection<Goal> Goals { get; set; } = new List<Goal>();
     }
 }

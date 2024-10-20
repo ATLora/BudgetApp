@@ -5,7 +5,7 @@ using BudgetApp.Models.ViewModels;
 
 namespace BudgetApp.Services.Interfaces
 {
-    public interface IIncomeService
+    public interface ITransactionService
     {
         //Task<IEnumerable<Income>> GetIncomesAsync(string userId);
         //Task<Income> GetIncomeByIdAsync(int id, string userId);

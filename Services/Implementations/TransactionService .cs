@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BudgetApp.Services.Implementations
 {
-    public class IncomeService : IIncomeService
+    public class IncomeService : ITransactionService
     {
         private readonly ApplicationDbContext _db;
 
@@ -16,7 +16,7 @@ namespace BudgetApp.Services.Implementations
         }
         public async Task AddIncomeAsync(IncomeViewModel incomeDto, string userId)
         {
-            var newIncome = new Income
+            var newIncome = new Transaction
             {
                 Name = incomeDto.Name,
                 Description = incomeDto.Description,
@@ -29,7 +29,7 @@ namespace BudgetApp.Services.Implementations
                 Date = incomeDto.Date,
                 UserId = userId
             };
-            _db.Incomes.Add(newIncome);
+            _db.Transactions.Add(newIncome);
             await _db.SaveChangesAsync();
         }
     }

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BudgetApp.Models.CoreModels
 {
-    public class Expense
+    public class BudgetItem
     {
         [Key]
         public int Id { get; set; }
@@ -23,6 +23,7 @@ namespace BudgetApp.Models.CoreModels
         public bool IsRecurrent { get; set; }
         public int? SetRecurrentDay { get; set; }
         public DateTime Date { get; set; }
+        public int TransactionType { get; set; }
         public string UserId { get; set; }
         [ForeignKey("UserId")]
         public ApplicationUser User { get; set; }

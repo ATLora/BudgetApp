@@ -15,7 +15,9 @@ namespace BudgetApp.Models.ViewModels
         public decimal? InitialBalance { get; set; }
         public GoalViewModel? Goal { get; set; }
         public List<Category> Categories { get; set; } = new List<Category>();
-        public List<IncomeViewModel> Incomes { get; set; } = new List<IncomeViewModel>();
-        public List<ExpenseViewModel> Expenses { get; set; } = new List<ExpenseViewModel>();
+        public List<BudgetItemDto> Incomes { get; set; } = new List<BudgetItemDto>();
+        public List<BudgetItemDto> Expenses { get; set; } = new List<BudgetItemDto>();
+        public List<BudgetItemDto> Savings { get; set; } = new List<BudgetItemDto>();
+
     }
 }
