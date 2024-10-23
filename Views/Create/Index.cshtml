@@ -48,5 +48,10 @@
             }
         }
     </div>
+    
     <button type="submit">Submit</button>
 }
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newCategoryModal">
+    Add New Category
+</button>
+@Html.Partial("~/Views/Modals/CreateCategory.cshtml", new BudgetApp.Models.Dtos.CategoryDto())

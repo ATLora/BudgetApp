@@ -121,7 +121,7 @@ namespace BudgetApp.Controllers
                         .ToList());
 
                     allExpenses = _utilitiesService
-                        .MergeBudgetItems(allIncomes, existingBudgetItemDto
+                        .MergeBudgetItems(allExpenses, existingBudgetItemDto
                         .Where(x => x.TransactionType == MasterData.TransactionTypes.Expense)
                         .ToList());
 
