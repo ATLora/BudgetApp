@@ -33,6 +33,27 @@ namespace BudgetApp.Services.Implementations
             _db.BudgetItems.Add(newExpense);
             await _db.SaveChangesAsync();
         }
+
+        public async Task UpdateBudgetItemAsync(BudgetItemDto budgetItemDto, string userId)
+        {
+            var expense = await _db.BudgetItems
+                .FirstOrDefaultAsync(x => x.CategoryId == budgetItemDto.CategoryId
+                && x.UserId == userId);
+
+            expense.Name = budgetItemDto.Name;
+            expense.Description = budgetItemDto.Description;
+            expense.ProjectedAmount = budgetItemDto.ProjectedAmount != null ? budgetItemDto.ProjectedAmount.Value : null;
+            expense.RealAmount = budgetItemDto.RealAmount != null ? budgetItemDto.RealAmount.Value : null;
+            expense.CategoryId = budgetItemDto.CategoryId;
+            expense.SubCategoryId = budgetItemDto.SubCategoryId;
+            expense.IsRecurrent = budgetItemDto.IsRecurrent;
+            expense.SetRecurrentDay = budgetItemDto.SetRecurrentDay != null ? budgetItemDto.SetRecurrentDay.Value : null;
+            expense.Date = budgetItemDto.Date;
+            expense.TransactionType = budgetItemDto.TransactionType;
+            expense.UserId = userId;
+            
+            await _db.SaveChangesAsync();
+        }
         public async Task<List<BudgetItem>> GetAllBudgetItems(string userId)
         {
             var existingBudgetItem = await _db.BudgetItems
@@ -56,6 +77,13 @@ namespace BudgetApp.Services.Implementations
                 SetRecurrentDay = item.SetRecurrentDay,
                 Date = item.Date
             }).ToList();
+        }
+
+        public async Task<bool> CheckIfBudgetItemExist(string userId, int categoryId)
+        {
+            return await _db.BudgetItems
+                .AnyAsync(x => x.UserId == userId 
+                && x.CategoryId == categoryId);
         }
     }
 }

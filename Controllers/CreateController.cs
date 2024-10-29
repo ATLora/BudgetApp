@@ -23,6 +23,7 @@ namespace BudgetApp.Controllers
         private readonly IGoalService _goalService;
         private readonly IBalanceService _balanceService;
         private readonly IUtilitiesService _utilitiesService;
+        private readonly ICategoryService _categoryService;
 
         public CreateController(ApplicationDbContext context, 
                                 UserManager<ApplicationUser> userManager,
@@ -30,7 +31,8 @@ namespace BudgetApp.Controllers
                                 IBudgetItemService expenseService,
                                 IGoalService goalService,
                                 IBalanceService balanceService,
-                                IUtilitiesService utilitiesService)
+                                IUtilitiesService utilitiesService,
+                                ICategoryService categoryService)
         {
             _db = context;
             _userManager = userManager;
@@ -39,6 +41,7 @@ namespace BudgetApp.Controllers
             _goalService = goalService;
             _balanceService = balanceService;
             _utilitiesService = utilitiesService;
+            _categoryService = categoryService;
         }
         [HttpPost]
         public async Task<ActionResult> Create(InitialBudgetViewModel model)
@@ -56,7 +59,18 @@ namespace BudgetApp.Controllers
                         {
                             if (income.ProjectedAmount != null)
                             {
-                                await _budgetItemService.AddBudgetItemAsync(income, userId);
+                                income.Name = await _categoryService
+                                    .GetCategoryName(income.CategoryId.Value);
+
+                                if(await _budgetItemService
+                                    .CheckIfBudgetItemExist(userId, income.CategoryId.Value))
+                                {
+                                    await _budgetItemService.UpdateBudgetItemAsync(income, userId);
+                                }
+                                else
+                                {
+                                    await _budgetItemService.AddBudgetItemAsync(income, userId);
+                                }
                             }
                         }
 
@@ -64,7 +78,18 @@ namespace BudgetApp.Controllers
                         {
                             if (expense.ProjectedAmount != null)
                             {
-                                await _budgetItemService.AddBudgetItemAsync(expense, userId);
+                                expense.Name = await _categoryService
+                                    .GetCategoryName(expense.CategoryId.Value);
+
+                                if (await _budgetItemService
+                                    .CheckIfBudgetItemExist(userId, expense.CategoryId.Value))
+                                {
+                                    await _budgetItemService.UpdateBudgetItemAsync(expense, userId);
+                                }
+                                else
+                                {
+                                    await _budgetItemService.AddBudgetItemAsync(expense, userId);
+                                }
                             }
                         }
 
@@ -107,49 +132,41 @@ namespace BudgetApp.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user != null)
             {
-                var existingBudgetItem = _db.BudgetItems.Where(x => x.UserId == user.Id).ToList();//TODO : Implement as service
-                if(existingBudgetItem != null)
+                // Obtener los ingresos y gastos ya creados para el usuario !TODO: Implementar como servicio
+                var existingBudgetItems = await _db.BudgetItems
+                    .Where(x => x.UserId == user.Id)
+                    .ToListAsync();
+
+                //!TODO: Implementar como servicio
+                var allCategories = await _db.Categories.ToListAsync();
+
+                // Convertir `BudgetItems` a DTOs
+                var existingBudgetItemDtos = _budgetItemService.ConvertBudgetItemToDtoList(existingBudgetItems);
+
+                // Agrupar los ingresos y gastos
+                var model = new InitialBudgetViewModel
                 {
-                    var allCategories = await _db.Categories.ToListAsync();
-                    var allIncomes = await _utilitiesService.GetIncomeCategoriesAsBudgetItemDtoAsync();
-                    var allExpenses = await _utilitiesService.GetExpenseCategoriesAsBudgetItemAsync();
-                    var existingBudgetItemDto = _budgetItemService.ConvertBudgetItemToDtoList(existingBudgetItem);
-
-                    allIncomes = _utilitiesService
-                        .MergeBudgetItems(allIncomes, existingBudgetItemDto
+                    Categories = allCategories,
+                    Incomes = existingBudgetItemDtos
                         .Where(x => x.TransactionType == MasterData.TransactionTypes.Income)
-                        .ToList());
-
-                    allExpenses = _utilitiesService
-                        .MergeBudgetItems(allExpenses, existingBudgetItemDto
+                        .ToList(),
+                    Expenses = existingBudgetItemDtos
                         .Where(x => x.TransactionType == MasterData.TransactionTypes.Expense)
-                        .ToList());
+                        .ToList()
+                };
 
-                    var existingModel = new InitialBudgetViewModel
-                    {
-                        Categories = allCategories,
-                        Incomes = allIncomes,
-                        Expenses = allExpenses
-                    };
-
-                    return View(existingModel);
-
-                }
-                
+                return View(model);
             }
-            var categories = await _db.Categories.ToListAsync(); 
-            var incomes = await _utilitiesService.GetIncomeCategoriesAsBudgetItemDtoAsync(); 
-            var expenses = await _utilitiesService.GetExpenseCategoriesAsBudgetItemAsync(); 
 
-            var model = new InitialBudgetViewModel
+            // Si no hay usuario, devolver una vista con listas vacías
+            return View(new InitialBudgetViewModel
             {
-                Categories = categories,
-                Incomes = incomes,
-                Expenses = expenses
-            };
-
-            return View(model);
+                Categories = await _db.Categories.ToListAsync(),
+                Incomes = new List<BudgetItemDto>(),
+                Expenses = new List<BudgetItemDto>()
+            });
         }
+
 
     }
 }

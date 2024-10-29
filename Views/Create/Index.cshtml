@@ -1,4 +1,5 @@
-﻿@model BudgetApp.Models.ViewModels.InitialBudgetViewModel
+﻿@using BudgetApp.Models.Helpers;
+@model BudgetApp.Models.ViewModels.InitialBudgetViewModel
 
 @{
     ViewData["Title"] = "Create Initial Budget";
@@ -9,45 +10,47 @@
 @using (Html.BeginForm("Create", "Create", FormMethod.Post))
 {
     <div>
-        <h3>Incomes</h3>
+        <h4>Incomes</h4>
         @for (int i = 0; i < Model.Incomes.Count; i++)
         {
-            var incomeCategory = Model.Categories.FirstOrDefault(c => c.Id == Model.Incomes[i].CategoryId);
-            if (incomeCategory != null)
-            {
-                <div>
-                    <h4>@incomeCategory.Name <i class="@incomeCategory.Icon"></i></h4>
-                    <div>
-                        @Html.LabelFor(m => m.Incomes[i].ProjectedAmount)
-                        @Html.TextBoxFor(m => m.Incomes[i].ProjectedAmount, new { @name = $"Incomes[{i}].ProjectedAmount" })
-                        @Html.HiddenFor(m => m.Incomes[i].CategoryId, new { @name = $"Incomes[{i}].CategoryId" })
-                        @Html.HiddenFor(m => m.Incomes[i].Name, new { @name = $"Incomes[{i}].Name" })
-                        @Html.HiddenFor(m => m.Incomes[i].TransactionType, new { @name = $"Incomes[{i}].TrasactionType" })
-                    </div>
-                </div>
-            }
+            <div>
+                <!-- Dropdown para seleccionar CategoryId -->
+                @Html.DropDownList(
+                         $"Incomes[{i}].CategoryId",
+                         new SelectList(Model.Categories, "Id", "Name"),
+                         new { @name = $"Incomes[{i}].CategoryId" }
+                         )
+
+                <!-- Campo para ingresar el valor proyectado (ProjectedAmount) -->
+                @Html.TextBoxFor(m => m.Incomes[i].ProjectedAmount, new { @name = $"Incomes[{i}].ProjectedAmount" })
+
+                <!-- Campo oculto para TransactionType (fijo para ingresos: 2) -->
+                @Html.HiddenFor(m => m.Incomes[i].TransactionType, new { @name = $"Incomes[{i}].TransactionType", @value = MasterData.TransactionTypes.Income })
+            </div>
         }
     </div>
+
     <div>
-        <h3>Expenses</h3>
+        <h4>Expenses</h4>
         @for (int i = 0; i < Model.Expenses.Count; i++)
         {
-            var expenseCategory = Model.Categories.FirstOrDefault(c => c.Id == Model.Expenses[i].CategoryId);
-            if (expenseCategory != null)
-            {
-                <div>
-                    <h4>@expenseCategory.Name <i class="@expenseCategory.Icon"></i></h4>
-                    <div>
-                        @Html.LabelFor(m => m.Expenses[i].ProjectedAmount)
-                        @Html.TextBoxFor(m => m.Expenses[i].ProjectedAmount, new { @name = $"Expenses[{i}].ProjectedAmount" })
-                        @Html.HiddenFor(m => m.Expenses[i].CategoryId, new { @name = $"Expenses[{i}].CategoryId" })
-                        @Html.HiddenFor(m => m.Expenses[i].Name, new { @name = $"Expenses[{i}].Name" })
-                        @Html.HiddenFor(m => m.Expenses[i].TransactionType, new { @name = $"Expenses[{i}].TrasactionType" })
-                    </div>
-                </div>
-            }
+            <div>
+                <!-- Dropdown para seleccionar CategoryId -->
+                @Html.DropDownList(
+                         $"Expenses[{i}].CategoryId",
+                         new SelectList(Model.Categories, "Id", "Name"),
+                         new { @name = $"Expenses[{i}].CategoryId" }
+                         )
+
+                <!-- Campo para ingresar el valor proyectado (ProjectedAmount) -->
+                @Html.TextBoxFor(m => m.Expenses[i].ProjectedAmount, new { @name = $"Expenses[{i}].ProjectedAmount" })
+
+                <!-- Campo oculto para TransactionType (fijo para gastos: 1) -->
+                @Html.HiddenFor(m => m.Expenses[i].TransactionType, new { @name = $"Expenses[{i}].TransactionType", @value = MasterData.TransactionTypes.Expense })
+            </div>
         }
     </div>
+
     
     <button type="submit">Submit</button>
 }
