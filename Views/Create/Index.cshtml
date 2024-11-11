@@ -9,15 +9,15 @@
 
 @using (Html.BeginForm("Create", "Create", FormMethod.Post))
 {
-    <div>
+    <div id="incomesContainer">
         <h4>Incomes</h4>
         @for (int i = 0; i < Model.Incomes.Count; i++)
         {
-            <div>
+            <div class="income-entry">
                 <!-- Dropdown para seleccionar CategoryId -->
                 @Html.DropDownList(
                          $"Incomes[{i}].CategoryId",
-                         new SelectList(Model.Categories, "Id", "Name"),
+                         new SelectList(Model.IncomeCategories, "Id", "Name", Model.Incomes[i].CategoryId),
                          new { @name = $"Incomes[{i}].CategoryId" }
                          )
 
@@ -29,16 +29,16 @@
             </div>
         }
     </div>
-
-    <div>
+    <button type="button" id="addIncomeButton">Add Income</button>
+    <div id="expense-container">
         <h4>Expenses</h4>
         @for (int i = 0; i < Model.Expenses.Count; i++)
         {
-            <div>
+            <div class="expense-entry">
                 <!-- Dropdown para seleccionar CategoryId -->
                 @Html.DropDownList(
                          $"Expenses[{i}].CategoryId",
-                         new SelectList(Model.Categories, "Id", "Name"),
+                         new SelectList(Model.ExpenseCategories, "Id", "Name", Model.Expenses[i].CategoryId),
                          new { @name = $"Expenses[{i}].CategoryId" }
                          )
 
@@ -50,11 +50,52 @@
             </div>
         }
     </div>
+    <button type="button" id="add-expense-btn" class="btn btn-primary">Add Expense</button>
 
-    
     <button type="submit">Submit</button>
 }
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newCategoryModal">
     Add New Category
 </button>
 @Html.Partial("~/Views/Modals/CreateCategory.cshtml", new BudgetApp.Models.Dtos.CategoryDto())
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#addIncomeButton').click(function () {
+            var newIndex = $('.income-entry').length;
+            var newEntry = `
+                <div class="income-entry">
+                    <select name="Incomes[${newIndex}].CategoryId">
+                    @foreach (var category in Model.IncomeCategories)
+                    {
+                                <option value="@category.Id">@category.Name</option>
+                    }
+                    </select>
+                    <input type="text" name="Incomes[${newIndex}].ProjectedAmount" />
+                    <input type="hidden" name="Incomes[${newIndex}].TransactionType" value="2" />
+                </div>
+            `;
+
+            $('#incomesContainer').append(newEntry);
+        });
+        $('#add-expense-btn').on('click', function () {
+            var expenseIndex = $('.expense-entry').length;
+            const newExpenseEntry = `
+                    <div class="expense-entry">
+                        <select name="Expenses[${expenseIndex}].CategoryId">
+                        @foreach (var category in Model.ExpenseCategories)
+                        {
+                                    <option value="@category.Id">@category.Name</option>
+                        }
+                        </select>
+                        <input type="text" name="Expenses[${expenseIndex}].ProjectedAmount"/>
+                        <input type="hidden" name="Expenses[${expenseIndex}].TransactionType" value="@MasterData.TransactionTypes.Expense" />
+                    </div>
+                `;
+
+            $('#expense-container').append(newExpenseEntry);
+        });
+    });
+</script>

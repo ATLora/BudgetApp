@@ -4,7 +4,7 @@ namespace BudgetApp.Models.Dtos
 {
     public class BudgetItemDto
     {
-        public required string Name { get; set; }
+        public string? Name { get; set; }
         public string? Description { get; set; }
         [Display(Name = "Projected Amount")]
         public decimal? ProjectedAmount { get; set; }

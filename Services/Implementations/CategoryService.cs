@@ -38,6 +38,11 @@ namespace BudgetApp.Services.Implementations
             return await _db.Categories.ToListAsync();
         }
 
+        public async Task<List<Category>> GetAllCategories(string categoryType)
+        {
+            return await _db.Categories.Where(x => x.Type == categoryType).ToListAsync();
+        }
+
         public async Task<string> GetCategoryName(int categoryId)
         {
             var category = await _db.Categories.SingleOrDefaultAsync(c => c.Id == categoryId);
